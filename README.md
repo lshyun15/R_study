@@ -186,7 +186,7 @@ R program study
 <4주차>
 # 데이터의 입력과 출력
 ## 출력(화면)
-   1) 원칙적으로 print 함수 쓰는 것이 맞지만 R에서 변수명으로도 값이 출력됨
+    1) 원칙적으로 print 함수 쓰는 것이 맞지만 R에서 변수명으로도 값이 출력됨
     2) print(): 여러 개의 변수 값을 cat( )과 달리 쓰지 못한다. 
               -print(“가장 젊은 사람의 나이는”,{변수명},“이다.”) => error
                -자동 줄 바꿈이 이루어진다. 
@@ -205,7 +205,7 @@ R program study
      2) setwd( ): 새로운 작업 형태로 저장. (작업 폴더 변경하기) 
                -원하는 곳 ctrl c,ctrl v, 역슬레쉬로 바꾸기
 ## 읽기/쓰기 (파일)
-    ### csv 파일 읽기 
+ ### csv 파일 읽기 
         1) (변수명) <-read.csv(‘자료명’, header=T)
              - header: 열 이름처럼 생긴 것 -> header 정보
              - header = F인 경우는 header이 없을 때 
@@ -214,31 +214,85 @@ R program study
    
         2) View(head/tail(변수명)): 해당 데이터의 위/아래에서부터 5~6번째 줄만 보여줌
            class( ) 등 파일을 알아보는데 사용될 수 있음. 
-      ### csv 파일 쓰기
+### csv 파일 쓰기
           setwd( ): 작업 폴더 지정 후 
         1) write.csv(변수명, ‘파일 이름’): 해당 파일의 row에 데이터 값만큼 숫자가 써짐. 
         2) write.csv(변수명, ‘파일 이름’,row,names =F): row에 적힌 행 번호들이 사라짐. 
-      ### 엑셀(.xls,xlsx) 파일 읽기
+ ### 엑셀(.xls,xlsx) 파일 읽기
           패키지 설치(install,package).패키지 불러오기(library)
         1) 변수명<- read.xlsx(‘해당 파일’, fileEncoding = "CP949“ (파일 안에 한글 데이터 있는 경우), header= T(파일의 첫 번째 행은 데이터 값이 아닌 열 이름))
             -sep = ‘\t’: 데이터와 데이터 tab으로 떨어져있음.
-      ### 엑셀 파일 쓰기
+ ### 엑셀 파일 쓰기
             library(파일 불러오기)
         1) write.xlsx(넣을 데이터 명,”파일 이름.xlsx“, row.names =F(행 번호 제외해라))
          
-      ### txt 파일 읽기
-           
+ ### txt 파일 읽기
+       1) read.table
+           변수명 <- read.table(‘해당 파일.txt’,sep=“\t”(tab으로 구분될 때),fileEncoding=“CP949”,encoding =“UTF-8”(한글 인식), header = T(파일 첫 번째 행은 데이터 값이 아닌 열))
+       2) read.delim( ): tab을 자동 인식
+### txt 파일 쓰기
+          write.table(저장할 데이터(변수명), file= ‘저장할 파일명.txt’)
+        1) 매개변수 
+            -file
+             -append: F(기존 파일 제거 후 덮어쓰기), T: 기존 파일 내용 뒤 추가
+             -quote: T(데이터 값에 쌍따음표 표시), F( 쌍따음표 삭제)
+             -eol: 행과 행 어떻게 구분할지 (초기값:\n)
+             -na: 결측값 어떻게 표시할지(초기값:NA)
+            -row.names: 행의 이름 텍스트 파일에 표시할지 입력(TRUE)
+            -col.names: 열의 이름 텍스트 파일에 표시할지 입력(TRUE)
+### sink
+sink(“파일명.txt”,append=T)
+sink()
+:sink-sink 사이 나ㅐ용이 파일에 들어가게됨. append 함수 등 자유
+    
 
 
  <5주차>
-for/while
+# 조건문 
+   ## if문
+        a <- 1
+         if(비교조건){ 
+           조건이 참일 때 실행할 명령문(들)
+         }else{
+            조건이 거짓일 때 실행할 명령문(들)
+        }
+       -if 뒤에 조건 써주기 뒤에 중괄호 붙여주기
+       - 중괄호 안에 여러 줄 써도 상관 없음 
+       - else 사용시 중괄호 바로 뒤에 써야함(필수적인 건 아님)
+       - else 대신 if-if 써도 됨
+  ## ifelse문
+        ifelse(비교조건, 조건이 참일 때 선택할 값, 조것이 거짓일 때 선택할 값){
+
+
+# 반복문
+  ## for문
+    :정해진 반복 횟수만큼 실행
+         for(반복 변수 in 반복 범위){
+              반복할 명령문(들)
+          }
+       -print( ): 아래로 출력됨, cat(): 옆으로 (띄어쓰고 싶다면 ‘\n’)
+       -for문 안에 if 문 들어가는 경우 있다. 
+       - break가 나오는 순간 반복문을 무시하고 멈춘다
+       - next 만나면 밑에 보지 않고 그냥 바로 위로 올려보낸다
+## while문
+:특정 조건이 만족되는 동안 실행(조건이 거짓일 경우 반복 종료)
+
+ while(비교 조건){
+     
+      반복할 명령문(들)
+
+}
+         
+         - i = i +1과 같이 값을 올려줘야함
+
 
 
 <6주차>
 
 # apply 함수
   1) apply(데이터셋, 행/열 방향 지정, 적용 함수)
-     -행:1, 열:2 (행이 150줄 있으면 150개의 값이 나옴)
+
+        -행:1, 열:2 (행이 150줄 있으면 150개의 값이 나옴)
   2) subset 함수와 달리 데이터를 조건에 따라 뽑고 함수를 더 적용시킬 수 있음 
   3) 적용 함수에 따라 숫자만 받는 것들이 있음(mean,max...)
 
@@ -247,9 +301,12 @@ for/while
   1) 함수명 <- function( 받는 값 개수에 따라 변수 개수 받아야)
   2) 변수에 초기값 설정 가능 
   3) 파이썬과 달리 반환하는 결과 값이 두 개인 경우를 못 받음 => list로 만들어줘야함 
-     return(res_sum, res_sub) (x)
-     return(list(res_sum, res_sub)) (0)
-     return(c(res_sum, res_sub)) (X) -벡터 형식
+
+      return(res_sum, res_sub) (x)
+
+      return(list(res_sum, res_sub)) (0)
+
+      return(c(res_sum, res_sub)) (X) -벡터 형식
  4) 각각 출력하고 싶을 때 리스트 출력하는 것과 같음 즉, 이름 설정 가능함.
  5) “source”: 같은 파일 안에 있을 때 같은 함수 사용할 수 있다. 
 
@@ -257,7 +314,8 @@ for/while
   : 데이터 위치 찾기 
   1) which(  ): 해당 값이 아니라 인덱스(순서)가 나옴
   2) 종류:
-       -which.max()/ which.min()
+
+     -which.max()/ which.min()
   3) 변수명[which.max(변수명)] = max(변수명) : 해당 값이 나옴
   4) a<- which( )
     score[a] <-61 : 이런 식으로 한번에 값을 바꿔줄 수도 있음
